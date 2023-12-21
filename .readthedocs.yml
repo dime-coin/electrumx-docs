@@ -1,0 +1,16 @@
+version: 2
+
+# see https://readthedocs.org/projects/electrum-docs/
+# and the webhook set up in https://github.com/dime-coin/electrum-docs/settings/hooks
+
+build:
+  os: ubuntu-20.04
+  tools:
+    python: "3.11"
+
+sphinx:
+  configuration: conf.py
+
+python:
+   install:
+   - requirements: requirements-docs.txt
