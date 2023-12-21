@@ -11,44 +11,55 @@ Welcome to the ElectrumX-Dime Documentation!
 ElectrumX-Dime is a fork of `spesmilo/electrumx <https://github.com/spesmilo/electrumx>`_. ElectrumX-Dime allows users to run their own ElectrumX-Dime server. It connects to your full node and indexes the blockchain, allowing efficient querying of history of arbitrary addresses. The server can be exposed
 publicly, and joined to the public network of servers via peer discovery.
 
-The current version of ElectrumX-Dime is 1.0.
+The current version of ElectrumX-Dime is |release|.
 
 .. toctree::
    :maxdepth: 2
    :caption: Introduction
 
-   source
+Source Code
+-------------------
 
+.. _git:
 
+The project is hosted on `GitHub <https://github.com/dime-coin/electrumx-dimecoin>`_.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Advanced Users
+.. _bugtracker:
 
-   coldstorage_cmdline
-   hardfork
-   tor
-   gpg-check
+Please submit an issue on the `bug tracker <https://github.com/dime-coin/electrumx-dimecoin/issues>`_ if you have found a bug or have a suggestion to improve the server.
 
+Authors and License
+-----------------------
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Daemon and Command Line
+Neil Booth wrote the majority of the original code; see Authors for additional credits. Python version at least 3.8 is required.
 
-   cmdline
-   ssl
-   merchant
-   watchtower
-   jsonrpc
+.. _mit:
+
+The code is released under the `MIT License <https://github.com/dime-coin/electrumx-dimecoin/LICENCE`_.
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: For Developers
+   :caption: Getting Started
 
-   console
-   spv
-   seedphrase
+   See :ref:`How-To`.
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Documentation
+
+   features
+   changelog
+   How-To
+   environment
    protocol
-   transactions
-   plugin_rules
+   peer_discovery
+   rpc-interface
+   architecture
+   authors
+
+Indices and Tables
+=============================
+* :ref:`genindex`
+* :ref:`search`
