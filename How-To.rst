@@ -37,7 +37,7 @@ set in its configuration file.  If you have an existing installation
 of dimecoind and have not previously set this you will need to reindex
 the blockchain with::
 
-  bitcoind -reindex
+  dimecoind -reindex
 
 which can take some time.
 
@@ -52,10 +52,10 @@ used to either.
 
 When building the database from the genesis block, ElectrumX-Dime has to
 flush large quantities of data to disk and its DB.  You will have a
-better experience if the database directory is on an SSD than on an
-HDD.  Currently to around height 611,600 of the Bitcoin blockchain the
+better experience if the database directory is on an SSD rather than on an
+HDD.  Currently to around height 5,550,000 of the Dimecoin blockchain the
 final size of the leveldb database, and other ElectrumX-Dime file metadata
-comes to just over 46.9GB (43.7 GiB).  LevelDB needs a bit more for
+comes to just over XX.XXB (XX.X GiB).  LevelDB needs a bit more for
 brief periods, and the block chain is only getting longer, so it is
 recommend having at least 70-80GB of free space before starting.
 
@@ -132,7 +132,7 @@ are using :command:`systemd`, you need to set it in the
 :file:`.service` file (see `contrib/systemd/electrumx.service`_).
 
 
-Using Daemontools
+Using daemontools
 -----------------
 
 Next create a daemontools service directory; this only holds symlinks
@@ -269,14 +269,14 @@ from heights 363,000 to 378,000 is the most sluggish::
 
 *Machine A*: a low-spec 2011 1.6GHz AMD E-350 dual-core fanless CPU,
 8GB RAM and a DragonFlyBSD UFS filesystem on an SSD.  It requests
-blocks over the LAN from a bitcoind on machine B.  :envvar:`DB_CACHE`
+blocks over the LAN from a dimecoind on machine B.  :envvar:`DB_CACHE`
 the default of 1,200.  LevelDB.
 
 *Machine B*: a late 2012 iMac running Sierra 10.12.2, 2.9GHz quad-core
-Intel i5 CPU with an HDD and 24GB RAM.  Running bitcoind on the same
+Intel i5 CPU with an HDD and 24GB RAM.  Running dimecoind on the same
 machine.  :envvar:`DB_CACHE` set to 1,800.  LevelDB.
 
-For chains other than bitcoin-mainnet synchronization should be much
+For chains other than dimecoin-mainnet synchronization should be much
 faster.
 
 .. note:: ElectrumX-Dime will not serve normal client connections until it
@@ -339,7 +339,7 @@ Here is typical log output on startup::
   INFO:BlockProcessor:creating metadata diretcory
   INFO:BlockProcessor:software version: ElectrumX 0.10.2
   INFO:BlockProcessor:DB version: 5
-  INFO:BlockProcessor:coin: Bitcoin
+  INFO:BlockProcessor:coin: Dimecoin
   INFO:BlockProcessor:network: mainnet
   INFO:BlockProcessor:height: -1
   INFO:BlockProcessor:tip: 0000000000000000000000000000000000000000000000000000000000000000
@@ -383,7 +383,7 @@ to height 280,000 is should be fairly accurate.
 
 .. _SSL certificates:
 
-Creating a self-signed SSL certificate
+Creating a Self-Signed SSL Certificate
 ======================================
 
 These instructions are based on those of the ``electrum-server``
@@ -423,7 +423,7 @@ need to run your server with a different server name and a new
 certificate.  Therefore it's a good idea to make an offline backup
 copy of your certificate and key in case you need to restore them.
 
-Running on a privileged port
+Running on a Pivileged Port
 ============================
 
 You may choose to run electrumx on a different port than 50001
