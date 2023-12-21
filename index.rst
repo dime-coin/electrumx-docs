@@ -3,24 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to the Electrum-Dime Documentation!
-======================================
+Welcome to the ElectrumX-Dime Documentation!
+=============================================
 
-Electrum-Dime is a lightweight Dimecoin wallet.
+.. _source:
+
+ElectrumX-Dime is a fork of `spesmilo/electrumx <https://github.com/spesmilo/electrumx>`_. ElectrumX-Dime allows users to run their own ElectrumX-Dime server. It connects to your full node and indexes the blockchain, allowing efficient querying of history of arbitrary addresses. The server can be exposed
+publicly, and joined to the public network of servers via peer discovery.
+
+The current version of ElectrumX-Dime is 1.0.
 
 .. toctree::
    :maxdepth: 2
-   :caption: GUI and Beginners
+   :caption: Introduction
 
-   faq
-   invoices
-   2fa
-   multisig
-   coldstorage
-   hardware-linux
-   tails
-   plugins
-   malware
+   source
+
 
 
 .. toctree::
