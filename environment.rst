@@ -6,7 +6,7 @@ Environment Variables
 
 ElectrumX-Dime takes no command line arguments, instead its behaviour is controlled by
 environment variables.  Only a few are required to be given, the rest will have sensible
-defaults if not specified.  Many of the defaults around resource usage are conservative; I
+defaults if not specified.  Many of the defaults around resource usage are conservative; it is 
 encourage you to review them.
 
 .. note:: set :envvar:`SERVICES` appropriately to be able to connect to your server.  For
@@ -297,8 +297,8 @@ The following environment variables are all optional and help to limit
 server resource consumption and prevent simple DoS.
 
 Address subscriptions in ElectrumX-Dime are very cheap - they consume about
-160 bytes of memory each and are processed efficiently.  I feel the
-two subscription-related defaults below are low and encourage you to
+160 bytes of memory each and are processed efficiently.  The
+two subscription-related defaults below are low and it is encouraged to
 raise them.
 
 .. envvar:: MAX_SESSIONS
@@ -484,7 +484,7 @@ by tweaking the cache size.  Cache size is only checked roughly every
 minute, so the cache can grow beyond the specified size.  Moreover,
 the Python process is often quite a bit fatter than the cache size,
 because of Python overhead and also because leveldb consumes a lot of
-memory when flushing.  So I recommend you do not set this over 60% of
+memory when flushing.  So, it is recommend you do not set this over 60% of
 your available physical RAM:
 
 .. _CACHE:
@@ -497,12 +497,12 @@ your available physical RAM:
   written out frequently.  The bulk is used to cache UTXOs.
 
   Larger caches probably increase performance a little as there is
-  significant searching of the UTXO cache during indexing.  However, I
-  don't see much benefit in my tests pushing this too high, and in
+  significant searching of the UTXO cache during indexing.  However, there seem to be much benefit in 
+  tests pushing this too high, and in
   fact performance begins to fall, probably because LevelDB already
   caches, and also because of Python GC.
 
-  I do not recommend raising this above 2000.
+  It is not recommend raising this above 2000.
 
 .. _lib/coins.py: https://github.com/spesmilo/electrumx/blob/master/electrumx/lib/coins.py
 .. _uvloop: https://pypi.python.org/pypi/uvloop
