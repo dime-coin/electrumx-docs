@@ -35,7 +35,7 @@ Neil Booth wrote the majority of the original code; see Authors for additional c
 
 .. _mit:
 
-The code is released under the `MIT License <https://github.com/dime-coin/electrumx-dimecoin/LICENCE`_.
+The code is released under the `MIT License <https://github.com/dime-coin/electrumx-dimecoin/LICENCE>`_.
 
 
 .. toctree::
