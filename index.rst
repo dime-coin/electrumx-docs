@@ -3,15 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to the ElectrumX-Dime Documentation!
+Welcome to the *ElectrumX*DIME Documentation!
 =============================================
 
 .. _source:
 
-ElectrumX-Dime is a fork of `spesmilo/electrumx <https://github.com/spesmilo/electrumx>`_. ElectrumX-Dime allows users to run their own ElectrumX-Dime server. It connects to your full node and indexes the blockchain, allowing efficient querying of history of arbitrary addresses. The server can be exposed
+*ElectrumX*DIME is a fork of `spesmilo/electrumx <https://github.com/spesmilo/electrumx>`_. *ElectrumX*DIME allows users to run their own *ElectrumX*DIME server. It connects to your full node and indexes the blockchain, allowing efficient querying of history of arbitrary addresses. The server can be exposed
 publicly, and joined to the public network of servers via peer discovery.
 
-The current version of ElectrumX-Dime is |release|.
+The current version of *ElectrumX*DIME is |release|.
 
 .. toctree::
    :maxdepth: 2
