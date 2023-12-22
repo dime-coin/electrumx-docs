@@ -31,7 +31,7 @@ Please submit an issue on the `bug tracker <https://github.com/dime-coin/electru
 Authors and License
 -----------------------
 
-Neil Booth wrote the majority of the original code; see Authors for additional credits. Python version >= 3.8 is required.
+Neil Booth wrote the majority of the original code; see :ref:`Authors` for additional credits. Python version >= 3.8 is required.
 
 .. _mit:
 
