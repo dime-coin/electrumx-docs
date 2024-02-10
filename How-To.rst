@@ -1,20 +1,21 @@
 .. _How-To:
 
-=====
+============
 How-To Guide
-=====
+============
 
 Prerequisites
 =============
 
 **ElectrumX-Dime** should run on any flavour of unix but this guide assumes the
-user is running Ubuntu 22.04 LTS (x64) with a user named `electrumx`. Feel free to use
-whatever username you prefer, however, make sure to adjust the configurations
-accordingly.  
+user is running Ubuntu 22.04 LTS (x64) with a user named `electrumx` that has sudo priviliges. Feel free to use
+whatever username you prefer, however, make sure to adjust your configuration files accordingly.  
 
 ElectrumX-Dime has also been succesfully run on MacOS and DragonFlyBSD.  It won't run out-of-the-box
 on Windows, but the changes required to make it do so should be small - pull requests are welcomed.
 
+Dependencies
+------------------
 ================ ========================
 Package          Notes
 ================ ========================
@@ -30,7 +31,7 @@ DB Engine        A database engine package is required; two are
 Additionally, there is another package required to handle Dimecoins block hash
 functions. Instructions on installing the additional package for Dimecoin to follow below.
 
-Installing Dimecoin Core
+Dimecoin Core
 ------------------------
 
 If you have not done so already, you will need to download and fully sync the
@@ -50,9 +51,10 @@ the blockchain with::
 
 which can take some time.
 
-Here is a sample configuration file to be used for running your dimecoin daemon:
+Here is a sample of what your configuration file may contain for running your dimecoin node:
 
-.. code-block:: none
+.. code-block:: bash
+
     rpcuser=dimerpcuser
     rpcpassword=dimerpcpwd
     rpcallowip=127.0.0.1
@@ -66,32 +68,173 @@ Here is a sample configuration file to be used for running your dimecoin daemon:
 Once you have ensured that all prerequisites and dependencies are met, you can 
 proceed to the installation of ElectrumX and its configuration for use with Dimecoin.
 
-Installation and Setup of ElectrumX (Not as a Service)
-======================================================
+Installation and Setup of ElectrumX-Dime (Not as a Service)
+==============================================================
 
 Clone the ElextrumX-Dime repository
+------------------------------------
 
-.. code-block::bash
+.. code-block:: bash
+
     git clone https://github.com/dime-coin/electrumx-dimecoin.git
 
 Change into the directory of the freshly cloned repository:
 
-.. code-block::bash
+.. code-block:: bash
+
     cd electrumx-dimecoin
 
+Create a new directory for the ElectrumX-Dime database:
+
+.. code-block:: bash
+
+    mkdir db
+
+Build ElectrumX-Dime
+
+.. code-block:: bash
+
+    sudo python3 setup.py install
+
+Change back to home directory
+
+.. code-block:: bash
+
+    cd
+
+Install Dime Quark Hash
+------------------------
+
+ElectrumX-Dime requires an additional dependency to handle its hashing functions.
+
+.. code-block:: bash
+
+    git clone https://github.com/dime-coin/dime_quark_hash.git \
+    cd dime_quark_hash \
+    sudo python3 setup.py install
+
+After completing these steps, ElectrumX and the necessary Dimecoin hashing algorithm are installed 
+on your system. You are now ready to configure ElectrumX to communicate with your Dimecoin Core node.
+
+.. _SSL certificates:
+Create Self-Signed SSL Certificate
+----------------------------------
+To ensure secure connections to your ElectrumX server, you'll need to create self-signed SSL certificates. 
+Follow these steps within the `electrumx-dimecoin` folder:
+
+.. code-block:: bash
+
+    cd \
+    cd electrumx-dimecoin
+
+Now that you are in the electrumx-dimecoin directory, create a certificate directory
+
+.. code-block:: bash
+
+    mkdir cert \
+    cd cert
+
+Use OpenSSL to generate a new SSL certificate and private key with the following command:
+
+.. code-block:: bash
+
+    openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+
+During the process, you will be prompted to provide details for your certificate:
+
+* Country Name (2 letter code): Enter the two-letter code for your country.
+* State or Province Name (full name): Provide the full name of your state or province.
+* Locality Name (eg, city): Enter your city's name.
+* Organization Name (eg, company): You can skip this by pressing enter.
+* Organizational Unit Name (eg, section): Skip this as well by pressing enter.
+* Common Name (e.g. server FQDN or YOUR name): Enter electrumx as the common name.
+* Email Address: Skip the email address by pressing enter.
+
+If you run into an issue and that command does not need to run, you may need to install OpenSSL on your
+system.
+
+These steps create a private key (key.pem) and a public certificate (cert.pem) in the cert directory within 
+your electrumx-dimecoin folder. The certificate will be valid for 3650 days (~10 years), ensuring you 
+don't need to repeat this process frequently. Feel free to modify the number of days your certificat is valid.
+It is good practice to frequently update certs. If an SSL cert becomes compromised, it will persist until expiry.
+
+Create a Shell Script for ElectrumX-Dime
+----------------------------------------------
+
+To simplify the process of starting your ElectrumX-Dime server, you will create a shell script. 
+This script initializes ElectrumX-Dime with the correct settings for your setup.
+
+Use a text editor like nano to create your script:
+
+.. code-block:: bash
+
+    sudo nano start_elecx.sh
+
+Copy and paste the following lines into the editor. This script sets the necessary environment variables 
+and starts ElectrumX-Dime with your Dimecoin configuration:
+
+.. code-block:: bash
+
+    #!/bin/bash
+    echo "Starting up Electrumx-dimecoin"
+    echo "sudo ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://dimerpcuser:dimerpcpwd@localhost:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/home/electrumx/electrumx-dimecoin/cert/cert.pem SSL_KEYFILE=/home/electrumx/electrumx-dimecoin/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/home/electrumx/electrumx-dimecoin/db ./electrumx_server -v"
+    ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://dimerpcuser:dimerpcpass@localhost:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/home/electrumx/electrumx-dimecoin/cert/cert.pem SSL_KEYFILE=/home/electrumx/electrumx-dimecoin/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/home/electrumx/electrumx-dimecoin/db ./electrumx_server -v
 
 
+After pasting the script into nano, press Ctrl+O to save the file, then Ctrl+X to exit nano.
 
+To ensure the script can be run, make it executable:
 
+.. code-block:: bash
 
-While not a requirement for running ElectrumX-Dime, it is intended to be
-run with supervisor software such as Daniel Bernstein's
-`daemontools`_, Gerrit Pape's `runit`_ package or :command:`systemd`.
-These make administration of secure unix servers very easy, and it is
-strongly recommend you install one of these and familiarise yourself
-with them.  The instructions below and sample run scripts assume
-``daemontools``; adapting to ``runit`` should be trivial for someone
-used to either.
+    sudo chmod 774 start_elecx.sh
+
+Now, you have a script ready to start your ElectrumX-Dime server with a simple command.
+
+Install Screen and Launch ElectrumX-Dime
+----------------------------------------
+Using screen is a practical way to keep ElectrumX-Dime running in the background. Here's how to install screen 
+and use it to launch your ElectrumX-Dime server.
+
+If screen is not already installed on your system, you can install it using the following command:
+
+.. code-block:: bash
+
+    sudo apt update && sudo apt install screen -y  
+
+Create a new screen session named `electrumxdime`:
+
+.. code-block:: bash
+
+    screen -S electrumxdime
+
+Within the screen session, start your ElectrumX-Dime server by executing the startup script you created earlier:
+
+.. code-block:: bash
+
+    sudo ./start_elecx.sh
+    
+.. note:: 
+
+    The first time you start your ElectrumX-Dime server, it will take about ~30 minutes to get in sync with your 
+    Dimecoin Core node. You can monitor the screen session to see its progress. Once ElectrumX-Dime is near the end 
+    of sync, it will appear to hangup. Do not fear, it is not frozen. After a few minutes, you will start seeing 
+    new messages populate the log history.
+
+After confirming that ElectrumX-Dime has started successfully, you can detach from the screen session and leave ElectrumX running in the background:
+
+Press Ctrl + A then D to detach from the screen session.
+To reattach to the screen session later and check on ElectrumX-Dime, use the following command:
+
+.. code-block:: bash
+
+    screen -r electrumxdime
+
+This command reconnects you to your `electrumxdime` screen session, where you can view logs, issue commands,
+or shut down ElectrumX-Dime properly.
+
+Database Engine
+===============
 
 When building the database from the genesis block, ElectrumX-Dime has to
 flush large quantities of data to disk and its DB.  You will have a
@@ -101,9 +244,6 @@ final size of the leveldb database, and other ElectrumX-Dime file metadata
 comes to just over XX.XXB (XX.X GiB).  LevelDB needs a bit more for
 brief periods, and the block chain is only getting longer, so it is
 recommend having at least 70-80GB of free space before starting.
-
-Database Engine
-===============
 
 You can choose from LevelDB and RocksDB to store transaction
 information on disk.  The time taken and DB size is not significantly
@@ -120,8 +260,20 @@ You will need to install one of:
   ``pip3 install python-rocksdb`` or use the rocksdb extra install option to ElectrumX-Dime.
 + `pyrocksdb <http://pyrocksdb.readthedocs.io/en/v0.4/installation.html>`_ for an unmaintained version that doesn't work with recent releases of RocksDB
 
+Running ElectrumX-Dime (As a Service)
+=====================================
+
+While not a requirement for running ElectrumX-Dime, it is intended to be
+run with supervisor software such as Daniel Bernstein's
+`daemontools`_, Gerrit Pape's `runit`_ package or :command:`systemd`.
+These make administration of secure unix servers very easy, and it is
+strongly recommend you install one of these and familiarise yourself
+with them.  The instructions below and sample run scripts assume
+``daemontools``; adapting to ``runit`` should be trivial for someone
+used to either.
+
 Running
-=======
+-------
 
 Install the prerequisites above.
 
@@ -144,12 +296,11 @@ see setup.py's ``extra_requires`` for a complete list.
 
 You can also run the code from the source tree or a copy of it.
 
-
-You should create a standard user account to run the server under;
-your own is probably adequate unless paranoid.  The paranoid might
-also want to create another user account for the daemontools logging
-process.  The sample scripts and these instructions assume it is all
-under one account which is have called ``electrumx`` in the example below.
+You should create a standard user account to run the server; using your own account is generally 
+sufficient for most users. For those who prefer an additional layer of security, it might be advisable 
+to create a separate user account specifically for the daemontools logging process. The example scripts 
+and instructions provided here assume that everything is operated under a single account, which we've 
+named ``electrumx`` in the examples below.
 
 Next create a directory where the database will be stored and make it
 writeable by the ``electrumx`` account.  It is recommended this directory
@@ -157,22 +308,6 @@ live on an SSD::
 
     mkdir /path/to/db_directory
     chown electrumx /path/to/db_directory
-
-
-Process Limits
---------------
-
-You must ensure the ElectrumX-Dime process has a large open file limit.
-During sync it should not need more than about 1,024 open files.  When
-serving it will use approximately 256 for LevelDB plus the number of
-incoming connections.  It is not unusual to have 1,000 to 2,000
-connections being served, so it is suggested you set your open files limit
-to at least 2,500.
-
-Note that setting the limit in your shell does *NOT* affect ElectrumX-Dime
-unless you are invoking ElectrumX-Dime directly from your shell.  If you
-are using :command:`systemd`, you need to set it in the
-:file:`.service` file (see `contrib/systemd/electrumx.service`_).
 
 
 Using daemontools
@@ -279,9 +414,26 @@ To install on the Raspberry Pi 3 you will need to update to the
 See also `contrib/raspberrypi3/run_electrumx.sh`_ for an easy way to
 configure and launch electrumx.
 
+Additional Considerations
+=========================
+
+Process Limits
+--------------
+
+You must ensure the ElectrumX-Dime process has a large open file limit.
+During sync it should not need more than about 1,024 open files.  When
+serving it will use approximately 256 for LevelDB plus the number of
+incoming connections.  It is not unusual to have 1,000 to 2,000
+connections being served, so it is suggested you set your open files limit
+to at least 2,500.
+
+Note that setting the limit in your shell does *NOT* affect ElectrumX-Dime
+unless you are invoking ElectrumX-Dime directly from your shell.  If you
+are using :command:`systemd`, you need to set it in the
+:file:`.service` file (see `contrib/systemd/electrumx.service`_).
 
 Sync Progress
-=============
+--------------
 
 Time taken to index the blockchain depends on your hardware of course.
 As Python is single-threaded most of the time only 1 core is kept
@@ -297,38 +449,13 @@ has its caches and disk I/O tuned to that task only.
 The :envvar:`CACHE_MB` environment variable controls the total cache
 size ElectrumX-Dime uses; see :ref:`here <CACHE>` for caveats.
 
-Here is my experience with the codebase of early 2017 (the current
-codebase is faster), to given heights and rough wall-time.  The period
-from heights 363,000 to 378,000 is the most sluggish::
-
-                 Machine A     Machine B
-  181,000          25m 00s      5m 30s
-  283,500                       1h 00m
-  321,800                       1h 40m
-  357,000          12h 32m      2h 41m
-  386,000          21h 56m      4h 25m
-  414,200       1d 12h 29m      6h 30m
-  447,168       2d 13h 20m      9h 47m
-
-*Machine A*: a low-spec 2011 1.6GHz AMD E-350 dual-core fanless CPU,
-8GB RAM and a DragonFlyBSD UFS filesystem on an SSD.  It requests
-blocks over the LAN from a dimecoind on machine B.  :envvar:`DB_CACHE`
-the default of 1,200.  LevelDB.
-
-*Machine B*: a late 2012 iMac running Sierra 10.12.2, 2.9GHz quad-core
-Intel i5 CPU with an HDD and 24GB RAM.  Running dimecoind on the same
-machine.  :envvar:`DB_CACHE` set to 1,800.  LevelDB.
-
-For chains other than dimecoin-mainnet synchronization should be much
-faster.
-
 .. note:: ElectrumX-Dime will not serve normal client connections until it
           has fully synchronized and caught up with your daemon.
           However LocalRPC connections are served at all times.
 
 
 Terminating ElectrumX-Dime
-=====================
+--------------------------
 
 The preferred way to terminate the server process is to send it the
 ``stop`` RPC command::
@@ -366,9 +493,8 @@ simultaneously from the same service directory, such as a testnet or
 altcoin server.  See the man pages of these various commands for more
 information.
 
-
 Understanding the Logs
-======================
+----------------------
 
 You can see the logs usefully like so::
 
@@ -422,54 +548,12 @@ minute.  UTXO flushes can take several minutes and look like this::
 
 The ETA shown is just a rough guide and in the short term can be quite
 volatile.  It tends to be a little optimistic at first; once you get
-to height 280,000 is should be fairly accurate.
-
-.. _SSL certificates:
-
-Creating a Self-Signed SSL Certificate
-======================================
-
-These instructions are based on those of the ``electrum-server``
-documentation.
-
-To run an SSL server you need to generate a self-signed certificate
-using openssl.  Alternatively you could not set :envvar:`SSL_PORT` in
-the environment and not serve over SSL, but this is not recommended.
-
-Use the sample code below to create a self-signed cert with a
-recommended validity of 5 years. You may supply any information for
-your sign request to identify your server.  They are not currently
-checked by the client except for the validity date.  When asked for a
-challenge password just leave it empty and press enter::
-
-    $ openssl genrsa -out server.key 2048
-    $ openssl req -new -key server.key -out server.csr
-    ...
-    Country Name (2 letter code) [AU]:US
-    State or Province Name (full name) [Some-State]:California
-    Common Name (eg, YOUR name) []: electrum-server.tld
-    ...
-    A challenge password []:
-    ...
-    $ openssl x509 -req -days 1825 -in server.csr -signkey server.key -out server.crt
-
-The :file:`server.crt` file goes in :envvar:`SSL_CERTFILE` and
-:file:`server.key` in :envvar:`SSL_KEYFILE` in the server process's
-environment.
-
-Starting with Electrum 1.9, the client will learn and locally cache
-the SSL certificate for your server upon the first request to prevent
-man-in-the middle attacks for all further connections.
-
-If your certificate is lost or expires on the server side, you will
-need to run your server with a different server name and a new
-certificate.  Therefore it's a good idea to make an offline backup
-copy of your certificate and key in case you need to restore them.
+to height 1,200,000 is should be fairly accurate.
 
 Running on a Pivileged Port
-============================
+-----------------------------
 
-You may choose to run electrumx on a different port than 50001
+You may choose to run Electrumx-Dime on a different port than 50001
 / 50002.  If you choose a privileged port ( < 1024 ) it makes sense to
 make use of a iptables NAT rule.
 
