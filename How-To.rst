@@ -150,7 +150,7 @@ During the process, you will be prompted to provide details for your certificate
 * Common Name (e.g. server FQDN or YOUR name): Enter electrumx as the common name.
 * Email Address: Skip the email address by pressing enter.
 
-If you run into an issue and that command does not need to run, you may need to install OpenSSL on your
+If you run into an issue and the :command:`openssl` command does not run, you may need to install OpenSSL on your
 system.
 
 These steps create a private key (key.pem) and a public certificate (cert.pem) in the cert directory within 
@@ -232,33 +232,6 @@ To reattach to the screen session later and check on ElectrumX-Dime, use the fol
 
 This command reconnects you to your `electrumxdime` screen session, where you can view logs, issue commands,
 or shut down ElectrumX-Dime properly.
-
-Database Engine
-===============
-
-When building the database from the genesis block, ElectrumX-Dime has to
-flush large quantities of data to disk and its DB.  You will have a
-better experience if the database directory is on an SSD rather than on an
-HDD.  Currently to around height 5,550,000 of the Dimecoin blockchain the
-final size of the leveldb database, and other ElectrumX-Dime file metadata
-comes to just over XX.XXB (XX.X GiB).  LevelDB needs a bit more for
-brief periods, and the block chain is only getting longer, so it is
-recommend having at least 70-80GB of free space before starting.
-
-You can choose from LevelDB and RocksDB to store transaction
-information on disk.  The time taken and DB size is not significantly
-different.  We tried to support LMDB, but its history write performance
-was much worse.
-
-You will need to install one of:
-
-+ `plyvel <https://plyvel.readthedocs.io/en/latest/installation.html>`_ for LevelDB.
-
-  Included as part of a regular pip or ``setup.py`` installation of ElectrumX-Dime.
-+ `python-rocksdb <https://pypi.python.org/pypi/python-rocksdb>`_ for RocksDB
-
-  ``pip3 install python-rocksdb`` or use the rocksdb extra install option to ElectrumX-Dime.
-+ `pyrocksdb <http://pyrocksdb.readthedocs.io/en/v0.4/installation.html>`_ for an unmaintained version that doesn't work with recent releases of RocksDB
 
 Running ElectrumX-Dime (As a Service)
 =====================================
@@ -416,6 +389,33 @@ configure and launch electrumx.
 
 Additional Considerations
 =========================
+
+Database Engine
+---------------
+
+When building the database from the genesis block, ElectrumX-Dime has to
+flush large quantities of data to disk and its DB.  You will have a
+better experience if the database directory is on an SSD rather than on an
+HDD.  Currently to around height 5,550,000 of the Dimecoin blockchain the
+final size of the leveldb database, and other ElectrumX-Dime file metadata
+comes to just over XX.XXB (XX.X GiB).  LevelDB needs a bit more for
+brief periods, and the block chain is only getting longer, so it is
+recommend having at least 70-80GB of free space before starting.
+
+You can choose from LevelDB and RocksDB to store transaction
+information on disk.  The time taken and DB size is not significantly
+different.  We tried to support LMDB, but its history write performance
+was much worse.
+
+You will need to install one of:
+
++ `plyvel <https://plyvel.readthedocs.io/en/latest/installation.html>`_ for LevelDB.
+
+  Included as part of a regular pip or ``setup.py`` installation of ElectrumX-Dime.
++ `python-rocksdb <https://pypi.python.org/pypi/python-rocksdb>`_ for RocksDB
+
+  ``pip3 install python-rocksdb`` or use the rocksdb extra install option to ElectrumX-Dime.
++ `pyrocksdb <http://pyrocksdb.readthedocs.io/en/v0.4/installation.html>`_ for an unmaintained version that doesn't work with recent releases of RocksDB
 
 Process Limits
 --------------
