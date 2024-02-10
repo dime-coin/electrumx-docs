@@ -51,7 +51,6 @@ which can take some time.
 Here is a sample configuration file to be used for running your dimecoin daemon:
 
 .. code-block:: none
-
 rpcuser=dimerpcuser
 rpcpassword=dimerpcpwd
 rpcallowip=127.0.0.1
@@ -69,11 +68,13 @@ Installation and Setup of ElectrumX (Not as a Service)
 ======================================================
 
 Clone the ElextrumX-Dime repository
-.. code-block:: bash
+
+.. code-block::bash
 git clone https://github.com/dime-coin/electrumx-dimecoin.git
 
 Change into the directory of the freshly cloned repository:
-.. code-block:: bash
+
+.. code-block::bash
 cd electrumx-dimecoin
 
 
