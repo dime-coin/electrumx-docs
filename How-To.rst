@@ -8,10 +8,12 @@ Prerequisites
 =============
 
 **ElectrumX-Dime** should run on any flavour of unix but this guide assumes the
-user is running Ubuntu 22.04 LTS (x64).  It has also been succesfully run
-on MacOS and DragonFlyBSD.  It won't run out-of-the-box
-on Windows, but the changes required to make it do so should be
-small - pull requests are welcomed.
+user is running Ubuntu 22.04 LTS (x64) with a user named `electrumx`. Feel free to use
+whatever username you prefer, however, make sure to adjust the configurations
+accordingly.  
+
+ElectrumX-Dime has also been succesfully run on MacOS and DragonFlyBSD.  It won't run out-of-the-box
+on Windows, but the changes required to make it do so should be small - pull requests are welcomed.
 
 ================ ========================
 Package          Notes
@@ -51,15 +53,15 @@ which can take some time.
 Here is a sample configuration file to be used for running your dimecoin daemon:
 
 .. code-block:: none
-rpcuser=dimerpcuser
-rpcpassword=dimerpcpwd
-rpcallowip=127.0.0.1
-rpcport=8332
-rpcbind=127.0.0.1
-daemon=1
-logtimestamps=1
-maxconnections=256
-txindex=1
+    rpcuser=dimerpcuser
+    rpcpassword=dimerpcpwd
+    rpcallowip=127.0.0.1
+    rpcport=8332
+    rpcbind=127.0.0.1
+    daemon=1
+    logtimestamps=1
+    maxconnections=256
+    txindex=1
 
 Once you have ensured that all prerequisites and dependencies are met, you can 
 proceed to the installation of ElectrumX and its configuration for use with Dimecoin.
@@ -70,12 +72,12 @@ Installation and Setup of ElectrumX (Not as a Service)
 Clone the ElextrumX-Dime repository
 
 .. code-block::bash
-git clone https://github.com/dime-coin/electrumx-dimecoin.git
+    git clone https://github.com/dime-coin/electrumx-dimecoin.git
 
 Change into the directory of the freshly cloned repository:
 
 .. code-block::bash
-cd electrumx-dimecoin
+    cd electrumx-dimecoin
 
 
 
