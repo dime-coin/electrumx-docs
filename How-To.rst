@@ -7,7 +7,8 @@ How-To Guide
 Prerequisites
 =============
 
-**ElectrumX-Dime** should run on any flavour of unix.  It has also been succesfully run
+**ElectrumX-Dime** should run on any flavour of unix but this guide assumes the
+user is running Ubuntu 22.04 LTS (x64).  It has also been succesfully run
 on MacOS and DragonFlyBSD.  It won't run out-of-the-box
 on Windows, but the changes required to make it do so should be
 small - pull requests are welcomed.
@@ -24,10 +25,16 @@ DB Engine        A database engine package is required; two are
                  supported (see `Database Engine`_ below).
 ================ ========================
 
-Some coins need an additional package, typically for their block hash
-functions. For example, `dash_hash`_ is required for DASH. Scrypt coins
-require a Python interpreter compiled and/or linked with OpenSSL 1.1.0
-or higher. Dimecoin also requires the PIVX_QUARK_HASH package.
+Additionally, there is another package required to handle Dimecoins block hash
+functions. Instructions on installing the additional package for Dimecoin to follow below.
+
+Installing Dimecoin Core
+------------------------
+
+If you have not done so already, you will need to download and fully sync the
+latest version of Dimecoin Core which can be found here: `Dimecoin Core`_
+
+Dimecoin Core needs to be running with the following configurations:
 
 You **must** be running a non-pruning dimecoin daemon with::
 
@@ -40,6 +47,39 @@ the blockchain with::
   dimecoind -reindex
 
 which can take some time.
+
+Here is a sample configuration file to be used for running your dimecoin daemon:
+
+.. code-block:: none
+
+rpcuser=dimerpcuser
+rpcpassword=dimerpcpwd
+rpcallowip=127.0.0.1
+rpcport=8332
+rpcbind=127.0.0.1
+daemon=1
+logtimestamps=1
+maxconnections=256
+txindex=1
+
+Once you have ensured that all prerequisites and dependencies are met, you can 
+proceed to the installation of ElectrumX and its configuration for use with Dimecoin.
+
+Installation and Setup of ElectrumX (Not as a Service)
+======================================================
+
+Clone the ElextrumX-Dime repository
+.. code-block:: bash
+git clone https://github.com/dime-coin/electrumx-dimecoin.git
+
+Change into the directory of the freshly cloned repository:
+.. code-block:: bash
+cd electrumx-dimecoin
+
+
+
+
+
 
 While not a requirement for running ElectrumX-Dime, it is intended to be
 run with supervisor software such as Daniel Bernstein's
@@ -447,3 +487,4 @@ You can then set the port as follows and advertise the service externally on the
 .. _`dash_hash`: https://pypi.python.org/pypi/dash_hash
 .. _`contrib/raspberrypi3/install_electrumx.sh`: https://github.com/spesmilo/electrumx/blob/master/contrib/raspberrypi3/install_electrumx.sh
 .. _`contrib/raspberrypi3/run_electrumx.sh`: https://github.com/spesmilo/electrumx/blob/master/contrib/raspberrypi3/run_electrumx.sh
+.. _`Dimecoin Core`: https://github.com/dime-coin/dimecoin/releases
