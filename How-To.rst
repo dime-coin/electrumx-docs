@@ -178,7 +178,7 @@ and starts ElectrumX-Dime with your Dimecoin configuration:
     #!/bin/bash
     echo "Starting up Electrumx-dimecoin"
     echo "sudo ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://dimerpcuser:dimerpcpwd@localhost:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/home/electrumx/electrumx-dimecoin/cert/cert.pem SSL_KEYFILE=/home/electrumx/electrumx-dimecoin/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/home/electrumx/electrumx-dimecoin/db ./electrumx_server -v"
-    ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://dimerpcuser:dimerpcpass@localhost:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/home/electrumx/electrumx-dimecoin/cert/cert.pem SSL_KEYFILE=/home/electrumx/electrumx-dimecoin/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/home/electrumx/electrumx-dimecoin/db ./electrumx_server -v
+    ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://dimerpcuser:dimerpcpwd@localhost:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/home/electrumx/electrumx-dimecoin/cert/cert.pem SSL_KEYFILE=/home/electrumx/electrumx-dimecoin/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/home/electrumx/electrumx-dimecoin/db ./electrumx_server -v
 
 
 After pasting the script into nano, press Ctrl+O to save the file, then Ctrl+X to exit nano.
