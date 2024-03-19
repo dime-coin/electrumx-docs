@@ -598,6 +598,8 @@ The process involves just a few steps, they are as follows (remember you need su
     .. code-block::
 
         `sudo ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://testuser:testpass@127.0.0.1:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/root/cert/cert.pem SSL_KEYFILE=/root/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/root/electrumx-dimecoin/db ./electrumx_compact_history -v`
+    
+Remember to change the start parameters used to run the script to match your setup and installation.
 
 * **Step 3:** Once the compact script finishes, restart your ElectrumX-Dime server. As noted above, starting the server takes several minutes and it will appear to hang. Understand it is not frozen. Let it finish startup.
 
