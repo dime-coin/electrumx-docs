@@ -565,6 +565,48 @@ You can then set the port as follows and advertise the service externally on the
 
     REPORT_SSL_PORT=110
 
+Compact DB History and Required Maintenance
+-------------------------------------------
+
+The ElectrumX-Dime server stores transaction history and other blockchain data in a database. Over time, this database can grow significantly in size due to the accumulation of transaction records. Running the compaction script will be
+required periodically once the flushcount reaches its limits. This will help:
+
+* Reduce the disk space used by the database.
+* Improving the performance of the server by optimizing data storage.
+* Ensuring query response times are maintained for Electrum clients.
+
+The process involves just a few steps, they are as follows (remember you need sudo priviliges to execute these commands):
+
+* **Step 1:** Stop the ElectrumX-Dime server
+
+.. code-block::
+
+    sudo ./electrumx_server stop
+
+* **Step 2:** Run the `electrumx_compact_script` included in the Electrumx-Dime root directory of your installation. 
+
+.. note:: 
+
+    This script needs to be run with the same start parameters you use to start your ElectrumX-Dime server. For example, if you start your ElectrumX-Dime server with:
+
+    .. code-block::
+
+        `sudo ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://testuser:testpass@127.0.0.1:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/root/cert/cert.pem SSL_KEYFILE=/root/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/root/electrumx-dimecoin/db ./electrumx_server -v`
+
+    You will need to start the compact script with the following:
+
+    .. code-block::
+
+        `sudo ALLOW_ROOT=1 COIN=Dimecoin DAEMON_URL=http://testuser:testpass@127.0.0.1:8332 SERVICES=ssl://:50002 SSL_CERTFILE=/root/cert/cert.pem SSL_KEYFILE=/root/cert/key.pem COST_SOFT_LIMIT=1000000 COST_HARD_LIMIT=10000000000000 DB_DIRECTORY=/root/electrumx-dimecoin/db ./electrumx_compact_history -v`
+
+* **Step 3:** Once the compact script finishes, restart your ElectrumX-Dime server. As noted above, starting the server takes several minutes and it will appear to hang. Understand it is not frozen. Let it finish startup.
+
+* **Step 4:** Finished. Your ElectrumX-Dime server will now run as expected. When the db flushcount reaches its limit again, you will need to run this script again to compact the db history.
+
+
+
+
+
 
 .. _`contrib/systemd/electrumx.service`: https://github.com/spesmilo/electrumx/blob/master/contrib/systemd/electrumx.service
 .. _`daemontools`: http://cr.yp.to/daemontools.html
